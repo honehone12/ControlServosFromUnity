@@ -15,6 +15,7 @@ namespace UnitySerialPort
         private byte maxFalseCount = 255;
 
         private SerialPort serialPort;
+        // need 2 threads ??
         private Thread portThreadRead;
         private Thread portThreadWrite;
         private readonly byte[] bytesBuffer = new byte[8];

@@ -11,13 +11,10 @@ namespace UnitySerialPort
         [SerializeField]
         protected SerialServoDriver servoDriver;
         [SerializeField]
-        protected float writingHZ;
+        protected float writingHZ = 30;
         [Header("VirtualServos")]
         [SerializeField]
         protected List<ServoSimulator> simulatorsList = new List<ServoSimulator>();
-        [SerializeField]
-        [Range(0, 180)]
-        protected byte value = 90;
 
         protected float writingTime;
 
@@ -80,6 +77,7 @@ namespace UnitySerialPort
                         simulatorsList[i].SetAngle(feedback[i]);
                     }
                     simulatorsList[i].LimitationCheck(out _);
+                    Debug.LogFormat("read {0} {1}", i, feedback[i]);
                 }
             }
         }
@@ -92,6 +90,7 @@ namespace UnitySerialPort
                 for (int i = 0; i < buff.Length; i++)
                 {
                     buff[i] = simulatorsList[i].Value;
+                    //Debug.LogFormat("write {0} {1}", i, buff[i]);
                 }
                 servoDriver.Write();
                 //Debug.LogFormat("write {0} {1}", buff[0], buff[1]);

@@ -1,9 +1,14 @@
 using System.Collections;
+using UnityEngine;
 
 namespace ServoMotorSimulator
 {
     public class DemoControl : UnitySerialPort.SerialServoControllerBase
     {
+        [SerializeField]
+        [Range(0, 180)]
+        protected byte value = 90;
+
         protected override IEnumerator Start()
         {
             yield return base.Start();
