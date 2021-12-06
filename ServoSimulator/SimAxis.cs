@@ -28,7 +28,7 @@ namespace ServoMotorSimulator
             {
                 Vector3 euler = axis switch
                 {
-                    SimAxis.X => new Vector3(angle, 1.0f, 1.0f),
+                    SimAxis.X => new Vector3(angle, 0.0f, 0.0f),
                     SimAxis.Y => new Vector3(0.0f, angle, 0.0f),
                     SimAxis.Z => new Vector3(0.0f, 0.0f, angle),
                     _ => new Vector3()

@@ -21,6 +21,8 @@ namespace ServoMotorSimulator
         private SimAxis axis;
         [SerializeField]
         private SimDirection direction;
+        [SerializeField]
+        private float zeroAngleReconfig;
         [Header("Limitation")]
         [SerializeField]
         private SimLimitation limitation;
@@ -52,13 +54,15 @@ namespace ServoMotorSimulator
             }
         }
 
-        public float FeedBack
+        public float VirtualFeedBack
         {
             get
             {
                 return targetTF.GetLocalTheta(axis);
             }
         }
+
+        public bool WithinLimitation { get; private set; }
 
         public bool LimitationCheck(out LimitationCheckInfo info)
         {
@@ -70,7 +74,7 @@ namespace ServoMotorSimulator
             float nextTheta = mode switch
             {
                 SimMode.Virtual => info.theta + info.delta, 
-                SimMode.SerialViz => info.theta + info.delta * 10.0f,
+                SimMode.SerialViz => info.theta + info.delta * 10.0f, // not sure this is good.
                 _ => info.theta + info.delta,
             };
 
@@ -89,14 +93,15 @@ namespace ServoMotorSimulator
                 //);
             }
 
-            return info.result;
+            return WithinLimitation = info.result;
         }
 
         public void SetAngle(float angle)
         {
             if(mode == SimMode.SerialViz)
             {
-                targetTF.SetLocalTheta(axis, angle);
+                targetTF.SetLocalTheta(axis, (angle - zeroAngleReconfig) % 360.0f);
+                //Debug.LogFormat("modified angle {0}", (angle - zeroAngleReconfig) % 360.0f);
             }
         }
 

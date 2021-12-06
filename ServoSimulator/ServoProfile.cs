@@ -14,7 +14,7 @@ namespace ServoMotorSimulator
         [Header("Dumper")]
         [SerializeField]
         [Range(0.0f, 1.0f)]
-        private float dumperSec = 0.1f; 
+        private float dumperSec = 0.1f;
 
         public float DumperSec => dumperSec;
 

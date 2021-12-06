@@ -16,7 +16,6 @@ namespace ServoMotorSimulator.ML
 
         private Rigidbody ballRB;
         private Stage stage;
-        private VirtualServoAgent agent;
 
         public Vector3 Position => ballRB.position;
 
@@ -37,12 +36,6 @@ namespace ServoMotorSimulator.ML
             {
                 Debug.LogError("stage component was not found.");
             }
-
-            agent = root.GetComponentInChildren<VirtualServoAgent>();
-            if (!agent)
-            {
-                Debug.LogError("could not fined agent.");
-            }
         }
 
         private void FixedUpdate()
@@ -55,12 +48,6 @@ namespace ServoMotorSimulator.ML
         
             ballRB.AddForce(rand3dir * Random.Range(forceMin, forceMax), forceMode);
         }
-
-        //private void OnCollisionEnter(Collision collision)
-        //{
-        //    agent.EndEpisode();
-        //    //Debug.Log("ball collision with " + collision.gameObject.name);
-        //}
     }
 }
 

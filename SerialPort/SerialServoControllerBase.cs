@@ -65,7 +65,7 @@ namespace UnitySerialPort
             }
         }
 
-        protected virtual void Update()
+        protected virtual void FixedUpdate()
         {
             if(servoDriver)
             {
@@ -89,11 +89,17 @@ namespace UnitySerialPort
                 byte[] buff = servoDriver.RequestWritingBuffer;
                 for (int i = 0; i < buff.Length; i++)
                 {
-                    buff[i] = simulatorsList[i].Value;
+                    if(simulatorsList[i].WithinLimitation)
+                    {
+                        buff[i] = simulatorsList[i].Value;
+                    }
+                    else
+                    {
+                        buff[i] = ServoConstants.VALUE_STOPPING;
+                    }
                     //Debug.LogFormat("write {0} {1}", i, buff[i]);
                 }
                 servoDriver.Write();
-                //Debug.LogFormat("write {0} {1}", buff[0], buff[1]);
             }
         }
     }
