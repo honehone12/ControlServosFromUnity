@@ -86,7 +86,7 @@ namespace UnitySerialPort
         {
             while (RunningThreadFLG)
             {
-                if(serialPort.ReadBufferSize >= MINIMUM_COMMUNICATION_LEN)
+                if(serialPort.BytesToRead >= MINIMUM_COMMUNICATION_LEN)
                 {
                     try
                     {
