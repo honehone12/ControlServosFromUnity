@@ -14,12 +14,12 @@ namespace ServoMotorSimulator.ML
         [Range(0f, 100f)]
         private float forceMax;
 
-        private Rigidbody ballRB;
+        protected Rigidbody ballRB;
         private Stage stage;
 
-        public Vector3 Position => ballRB.position;
+        public Vector3 GetPosition => ballRB.position;
 
-        public void SetRandomPosition()
+        public virtual void SetRandomPosition()
         {
             stage.GenerateRandomPosition(out Vector3 pos);
             ballRB.Sleep();
@@ -27,7 +27,7 @@ namespace ServoMotorSimulator.ML
             ballRB.WakeUp();
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             ballRB = GetComponent<Rigidbody>();
             Transform root = transform.root;
@@ -38,7 +38,7 @@ namespace ServoMotorSimulator.ML
             }
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             Vector3 rand3dir = new Vector3(
                 Random.Range(-1.0f, 1.0f),

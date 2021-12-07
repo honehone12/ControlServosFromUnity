@@ -65,11 +65,6 @@ namespace ServoMotorSimulator.ML
             }
         }
 
-        public override void OnEpisodeBegin()
-        {
-            ball.SetRandomPosition();
-        }
-
         public override void CollectObservations(VectorSensor sensor)
         {
             float angle0 = servoSimsList[0].VirtualFeedBack;
@@ -81,7 +76,7 @@ namespace ServoMotorSimulator.ML
 
             //this means camera's transform.
             Transform lookingEdge = raycaster.Muzzle;
-            Vector3 pos = ball.Position;
+            Vector3 pos = ball.GetPosition;
             //pos.x += Random.Range(-0.1f, 0.1f);
             //pos.y += Random.Range(-0.1f, 0.1f);
             //pos.z += Random.Range(-0.1f, 0.1f);

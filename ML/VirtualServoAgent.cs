@@ -114,7 +114,7 @@ namespace ServoMotorSimulator.ML
             //    lookingEdge.rotation
             //);
             //now add error
-            Vector3 pos = ball.Position;
+            Vector3 pos = ball.GetPosition;
             //pos.x += Random.Range(-0.1f, 0.1f);
             //pos.y += Random.Range(-0.1f, 0.1f);
             //pos.z += Random.Range(-0.1f, 0.1f);
@@ -171,7 +171,7 @@ namespace ServoMotorSimulator.ML
             }
 
             Transform muzzle = raycaster.Muzzle;
-            Vector3 dir = (ball.Position - muzzle.position).normalized;
+            Vector3 dir = (ball.GetPosition - muzzle.position).normalized;
             Quaternion ideal = Quaternion.LookRotation(dir);
             if(debugIdealBox)
             {
