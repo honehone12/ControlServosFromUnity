@@ -131,7 +131,7 @@ namespace UnitySerialPort
                                     bytesBuffer,
                                     i * dataSize
                                 );
-                                if(!float.IsNaN(read) && !float.IsInfinity(read))
+                                if(float.IsFinite(read))
                                 {
                                     recievedFeedback[i] = read;
                                 }
