@@ -3,10 +3,10 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
-using UnitySerialPort;
 
 namespace ServoMotorSimulator.ML
 {
+    [RequireComponent(typeof(DecisionRequester))]
     public class VirtualServoAgent : Agent
     {
         [SerializeField]
@@ -17,6 +17,15 @@ namespace ServoMotorSimulator.ML
         private Raycaster raycaster;
         [SerializeField]
         private Transform debugIdealBox;
+        [SerializeField]
+        private DecisionRequester requester;
+        [Space]
+        [SerializeField]
+        private bool useRandomizer;
+        [SerializeField]
+        private bool usePeriodRandomizer;
+        [SerializeField]
+        private RandomizerProfile randomizer;
 
         private uint falseCount;
         private uint rewardCount;
@@ -55,6 +64,16 @@ namespace ServoMotorSimulator.ML
                     Debug.LogError("could not find raycaster.");
                 }
             }
+
+            if((useRandomizer || usePeriodRandomizer) && !randomizer)
+            {
+                Debug.LogError("for using randomizer, serialize before play.");
+            }
+
+            if(usePeriodRandomizer)
+            {
+                requester = GetComponent<DecisionRequester>();
+            }
         }
 
         public override void OnEpisodeBegin()
@@ -62,6 +81,16 @@ namespace ServoMotorSimulator.ML
             ball.SetRandomPosition();
             falseCount = 0;
             rewardCount = 0;
+            if(useRandomizer)
+            {
+                servoSimsList.ForEach(
+                    (sim) => sim.RandomizeScholar = randomizer.GenerateRandomScholar
+                );
+            }
+            if(usePeriodRandomizer)
+            {
+                requester.DecisionPeriod = randomizer.GetRandomPeriod;
+            }
         }
 
         public override void CollectObservations(VectorSensor sensor)
@@ -92,8 +121,6 @@ namespace ServoMotorSimulator.ML
             sensor.AddObservation(
                 //////////////////////////////////////////////////////////
                 // values do not respond with actions are bad observations
-                // => origin.InverseTransformPoint(ball.Position)
-                /////////////////////////////////////////////////////////
                 lookingEdge.InverseTransformPoint(pos)
             );
         }

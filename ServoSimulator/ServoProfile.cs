@@ -18,12 +18,12 @@ namespace ServoMotorSimulator
 
         public float DumperSec => dumperSec;
 
-        public float GetIterationSpeed(byte value)
+        public float GetIterationSpeed(byte value, float randomScholar = 1.0f)
         {
             value = value > ServoConstants.VALUE_MAX ? ServoConstants.VALUE_MAX : value;
 
             float normalized = value / 180.0f * 2.0f - 1.0f;
-            return speedScholar * iterationSpeedCurve.Evaluate(normalized);
+            return randomScholar * speedScholar * iterationSpeedCurve.Evaluate(normalized);
         }
     }
 }

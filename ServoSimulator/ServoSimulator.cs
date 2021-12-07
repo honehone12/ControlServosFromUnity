@@ -64,6 +64,8 @@ namespace ServoMotorSimulator
 
         public bool WithinLimitation { get; private set; }
 
+        public float RandomizeScholar { get; set; }
+
         public bool LimitationCheck(out LimitationCheckInfo info)
         {
             info = new LimitationCheckInfo();
@@ -142,7 +144,15 @@ namespace ServoMotorSimulator
             {
                 if(LimitationCheck(out _))
                 {
-                    float delta = profile.GetIterationSpeed(value) * direction.ToFloat();
+                    float delta; 
+                    if(RandomizeScholar != 0.0f)
+                    {
+                        delta = profile.GetIterationSpeed(value, RandomizeScholar);
+                    }
+                    else
+                    {
+                        delta = profile.GetIterationSpeed(value) * direction.ToFloat();
+                    }
                     delta = Dumper(delta);
                     currentTheta = (currentTheta + delta) % 360.0f;
                     targetTF.SetLocalTheta(axis, currentTheta);
