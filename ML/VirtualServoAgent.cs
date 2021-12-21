@@ -97,8 +97,6 @@ namespace ServoMotorSimulator.ML
         {
             float angle0 = servoSimsList[0].VirtualFeedBack;
             float angle1 = servoSimsList[1].VirtualFeedBack;
-            //angle0 += Random.Range(-0.1f, 0.1f);
-            //angle1 += Random.Range(-0.1f, 0.1f);
             sensor.AddObservation(angle0);
             sensor.AddObservation(angle1);
             //Debug.LogFormat(
@@ -113,11 +111,8 @@ namespace ServoMotorSimulator.ML
             //sensor.AddObservation(
             //    lookingEdge.rotation
             //);
-            //now add error
-            Vector3 pos = ball.GetPosition;
-            //pos.x += Random.Range(-0.1f, 0.1f);
-            //pos.y += Random.Range(-0.1f, 0.1f);
-            //pos.z += Random.Range(-0.1f, 0.1f);
+            //Vector3 pos = ball.GetPosition;
+            Vector3 pos = ball.GetFakePosition;
             sensor.AddObservation(
                 //////////////////////////////////////////////////////////
                 // values do not respond with actions are bad observations

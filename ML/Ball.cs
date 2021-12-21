@@ -15,9 +15,11 @@ namespace ServoMotorSimulator.ML
         private float forceMax;
 
         protected Rigidbody ballRB;
+        protected Rigidbody fakeCenter;
         private Stage stage;
 
         public Vector3 GetPosition => ballRB.position;
+        public Vector3 GetFakePosition => fakeCenter.position;
 
         public virtual void SetRandomPosition()
         {
@@ -29,9 +31,13 @@ namespace ServoMotorSimulator.ML
 
         protected virtual void Awake()
         {
+            Transform tf = transform;
             ballRB = GetComponent<Rigidbody>();
-            Transform root = transform.root;
-            stage = root.GetComponentInChildren<Stage>();
+            if(tf.childCount > 0)
+            {
+                fakeCenter = tf.GetChild(0).GetComponent<Rigidbody>();
+            }
+            stage = tf.root.GetComponentInChildren<Stage>();
             if(!stage)
             {
                 Debug.LogError("stage component was not found.");

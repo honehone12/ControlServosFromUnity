@@ -68,31 +68,39 @@ namespace ServoMotorSimulator
 
         public bool LimitationCheck(out LimitationCheckInfo info)
         {
-            info = new LimitationCheckInfo();
-            info.theta = targetTF.GetLocalTheta(axis);
-            info.theta = info.theta > 180.0f && limitation.min < 0.0f ? info.theta - 360.0f : info.theta;
-            SimDirection nextDir = value.ToSimDirection().Blend(direction);
-            info.delta = profile.GetIterationSpeed(value) * direction.ToFloat();
-            float nextTheta = mode switch
+            if(limitation.min == 0.0f && limitation.max == 0.0f)
             {
-                SimMode.Virtual => info.theta + info.delta, 
-                SimMode.SerialViz => info.theta + info.delta * 10.0f, // not sure this is good.
-                _ => info.theta + info.delta,
-            };
-
-            info.result = !(
-                (nextTheta <= limitation.min && nextDir == SimDirection.Reversal) ||
-                (nextTheta >= limitation.max && nextDir == SimDirection.Forward)
-            );
-
-            if (!info.result)
+                info = new LimitationCheckInfo();
+                info.result = true;
+            }
+            else
             {
-                OnLimitationReached?.Invoke(ref info);
+                info = new LimitationCheckInfo();
+                info.theta = targetTF.GetLocalTheta(axis);
+                info.theta = info.theta > 180.0f && limitation.min < 0.0f ? info.theta - 360.0f : info.theta;
+                SimDirection nextDir = value.ToSimDirection().Blend(direction);
+                info.delta = profile.GetIterationSpeed(value) * direction.ToFloat();
+                float nextTheta = mode switch
+                {
+                    SimMode.Virtual => info.theta + info.delta,
+                    SimMode.SerialViz => info.theta + info.delta * 10.0f, // not sure this is good.
+                    _ => info.theta + info.delta,
+                };
 
-                //Debug.LogWarningFormat(
-                //    "limitation {1} => {1} : {2} of {3}",
-                //    info.theta, nextTheta, name, transform.root.name
-                //);
+                info.result = !(
+                    (nextTheta <= limitation.min && nextDir == SimDirection.Reversal) ||
+                    (nextTheta >= limitation.max && nextDir == SimDirection.Forward)
+                );
+
+                if (!info.result)
+                {
+                    OnLimitationReached?.Invoke(ref info);
+
+                    //Debug.LogWarningFormat(
+                    //    "limitation {1} => {1} : {2} of {3}",
+                    //    info.theta, nextTheta, name, transform.root.name
+                    //);
+                }
             }
 
             return WithinLimitation = info.result;
