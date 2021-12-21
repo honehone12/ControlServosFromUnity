@@ -69,6 +69,7 @@ namespace ServoMotorSimulator.ML
         {
             float angle0 = servoSimsList[0].VirtualFeedBack;
             float angle1 = servoSimsList[1].VirtualFeedBack;
+            //Debug.LogFormat("obs angle x {0} y {1}", angle0, angle1);
             //angle0 += Random.Range(-0.1f, 0.1f);
             //angle1 += Random.Range(-0.1f, 0.1f);
             sensor.AddObservation(angle0);
@@ -126,7 +127,7 @@ namespace ServoMotorSimulator.ML
 
             if (raycaster.Raycast(out _))
             {
-                Debug.Log("hit." + transform.root.name);
+                //Debug.Log("hit." + transform.root.name);
             }
         }
 
