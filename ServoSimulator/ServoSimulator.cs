@@ -155,7 +155,7 @@ namespace ServoMotorSimulator
                     float delta; 
                     if(RandomizeScholar != 0.0f)
                     {
-                        delta = profile.GetIterationSpeed(value, RandomizeScholar);
+                        delta = profile.GetIterationSpeed(value, RandomizeScholar) * direction.ToFloat();
                     }
                     else
                     {
